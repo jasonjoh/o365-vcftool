@@ -1,0 +1,7 @@
+<% if @contacts.any? %>
+  <ol class="contacts">
+    <% @contacts.each do |contact| %>
+      <li><%= contact['DisplayName'] %></li>
+    <% end %>
+  </ol>
+<% end %>
