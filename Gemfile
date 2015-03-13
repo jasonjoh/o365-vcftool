@@ -13,6 +13,11 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # Use Bootstrap
 gem 'bootstrap-sass'
+# Use oauth2 gem
+gem 'oauth2'
+# User ruby_outlook gem
+gem 'ruby_outlook'
+
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
