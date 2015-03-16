@@ -1,6 +1,16 @@
-<% if @contacts.any? %>
+<div class="pagination">
+  <a href="#" class="btn btn-default btn-primary">Import</a>
+  <a href="#" class="btn btn-default btn-primary">Export</a>
+  <% if @contacts['value'].any? %>
+    <% no_more = @contacts['@odata.nextLink'].nil? %>
+    <% current_page = params[:page].nil? ? 1 : params[:page].to_i %>
+    <a href="<%= root_url + "?page=#{current_page - 1}" %>" class="btn btn-default" <%= disabled = "disabled" if current_page == 1 %>>&lt;</a>
+    <a href="<%= root_url + "?page=#{current_page + 1}" %>" class="btn btn-default" <%= disabled = "disabled" if no_more %>>&gt;</a>
+  <% end %>
+</div>
+<% if @contacts['value'].any? %>
   <ol class="contacts">
-    <% @contacts.each do |contact| %>
+    <% @contacts['value'].each do |contact| %>
       <li><%= contact['DisplayName'] %></li>
     <% end %>
   </ol>

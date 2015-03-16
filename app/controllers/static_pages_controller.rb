@@ -8,7 +8,7 @@ class StaticPagesController < ApplicationController
       outlook_client.enable_fiddler = true
       
       view_size = 30
-      page = 1
+      page = params[:page].nil? ? 1 : params[:page].to_i
       fields = [
         "DisplayName"
       ]
@@ -17,7 +17,7 @@ class StaticPagesController < ApplicationController
       wrapped_contacts = outlook_client.get_contacts user.access_token,
         view_size, page, fields, sort
         
-      @contacts = wrapped_contacts['value']
+      @contacts = wrapped_contacts
     end
   end
 end
