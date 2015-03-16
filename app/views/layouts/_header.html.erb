@@ -6,7 +6,7 @@
         <li><%= link_to "Home", root_path %></li>
         <% if logged_in? %>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user %><b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name %><b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="https://outlook.office365.com/owa/#path=/people">Outlook Web App</a></li>
               <li class="divider"></li>

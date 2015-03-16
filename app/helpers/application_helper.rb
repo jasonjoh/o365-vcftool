@@ -11,23 +11,26 @@ module ApplicationHelper
   
   # Returns true if there is a logged on Office 365 user.
   def logged_in?
-    return not(session[:o365_access_token].nil?)
+    return not(session[:user_id].nil?)
   end
   
   # Returns the current user's name.
   def current_user
-    return session[:o365_user_name]
+    user = User.find_by(id: session[:user_id])
+    return user.nil? ? nil : user
   end
   
   # Extracts the session values used by the app.
   def get_session_vals
     if logged_in?
+      user = User.find_by(id: session[:user_id])
       session_values = {
-        'o365_user_name' => session[:o365_user_name],
-        'o365_email' => session[:o365_email],
-        'o365_access_token' => session[:o365_access_token],
-        'o365_refresh_token' => session[:o365_refresh_token],
-        'o365_token_expires' => session[:o365_token_expires]
+        'user_id' => session[:user_id],
+        'User Name' => user.name,
+        'User Email' => user.email,
+        'Access Token' => user.access_token,
+        'Refresh Token' => user.refresh_token,
+        'Token Expires' => user.token_expires
       }
     end
   end

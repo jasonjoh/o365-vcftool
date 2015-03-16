@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  email: MyString
+  access_token: MyText
+  refresh_token: MyText
+  token_expires: 2015-03-16 11:44:43
+
+two:
+  name: MyString
+  email: MyString
+  access_token: MyText
+  refresh_token: MyText
+  token_expires: 2015-03-16 11:44:43

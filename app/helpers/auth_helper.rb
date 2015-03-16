@@ -5,13 +5,13 @@ module AuthHelper
   # App's client ID. Register the app in Azure AD to get this value.
   CLIENT_ID = 'YOUR CLIENT ID HERE'
   # App's client secret. Register the app in Azure AD to get this value.
-  CLIENT_SECRET = 'YORU CLIENT SECRET HERE'
+  CLIENT_SECRET = 'YOUR CLIENT SECRET HERE'
 
   # Generates the login URL for the app.
   def get_login_url
     client = OAuth2::Client.new(CLIENT_ID,
                                 CLIENT_SECRET,
-                                :site => "https://login.windows.net",
+                                :site => "https://login.microsoftonline.com",
                                 :authorize_url => "/common/oauth2/authorize",
                                 :token_url => "/common/oauth2/token")
 
@@ -19,7 +19,7 @@ module AuthHelper
   end
   
   def get_logout_url(redirect_url)
-    logout_url = "https://login.windows.net/common/oauth2/logout?"
+    logout_url = "https://login.microsoftonline.com/common/oauth2/logout?"
     logout_url << { post_logout_redirect_uri: redirect_url }.to_param
   end
   
@@ -27,7 +27,7 @@ module AuthHelper
   def get_token_from_code(auth_code)
     client = OAuth2::Client.new(CLIENT_ID,
                                 CLIENT_SECRET,
-                                :site => "https://login.windows.net",
+                                :site => "https://login.microsoftonline.com",
                                 :authorize_url => "/common/oauth2/authorize",
                                 :token_url => "/common/oauth2/token")
 
