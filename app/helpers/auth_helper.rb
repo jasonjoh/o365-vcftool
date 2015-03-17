@@ -38,6 +38,27 @@ module AuthHelper
     access_token = token
   end
   
+  def get_token_from_refresh_token(user)
+    logger.debug "BEGIN get_token_from_refresh_token"
+    client = OAuth2::Client.new(CLIENT_ID,
+                                CLIENT_SECRET,
+                                :site => "https://login.microsoftonline.com",
+                                :authorize_url => "/common/oauth2/authorize",
+                                :token_url => "/common/oauth2/token")
+                                
+    current_token = OAuth2::AccessToken.from_hash(client,
+      { :refresh_token => user.refresh_token })
+    
+    logger.debug "Current token: #{current_token.inspect}"
+    
+    new_token = current_token.refresh!
+    logger.debug "New token: #{new_token.inspect}"
+    
+    user.access_token = new_token.token
+    user.refresh_token = new_token.refresh_token
+    user.save
+  end
+  
   # Parses an id token to get user information
   def get_user_from_id_token(id_token)
     # Split the string on '.'

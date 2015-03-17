@@ -17,6 +17,10 @@ gem 'bootstrap-sass'
 gem 'oauth2'
 # User ruby_outlook gem
 gem 'ruby_outlook'
+# CarrierWave for file uploads
+gem 'carrierwave'
+# vcard gem for vcard-ness
+gem 'vcard'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby

@@ -1,0 +1,29 @@
+<div class="row">
+  <aside class="col-md-4">
+    <section>
+    <h3>Paste or enter vCard data in the field to the right, or use the button below to open a local vCard file.</h3>
+    <%= form_tag upload_path, multipart: true, role: "form" do %>
+      <div class="form-group">
+        <%= label_tag "vcard_file", "Please select a vCard file to import." %>
+        <%= file_field_tag "vcard_file", accept: "text/vcard", required: true, class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Load Contents", class: "btn btn-primary" %> 
+      </div>
+    <% end %>
+    </section>
+  </aside>
+  <div class="col-md-8">
+    <section>
+      <%= form_tag create_contacts_path, role: "form" do %>
+        <div class="form-group">
+          <%= label_tag "vcard", "vCard data to import:" %>
+          <%= text_area_tag "vcard", @vcard, class: "form-control", rows: 30, required: true %>
+        </div>
+        <div class="form-group">
+          <%= submit_tag "Import", class: "btn btn-lg btn-primary" %>
+        </div>
+      <% end %>
+    <section>
+  </div>
+</div>

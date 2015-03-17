@@ -30,7 +30,8 @@ module ApplicationHelper
         'User Email' => user.email,
         'Access Token' => user.access_token,
         'Refresh Token' => user.refresh_token,
-        'Token Expires' => user.token_expires
+        'Token Expires' => user.token_expires,
+        'Current Upload' => session[:current_upload]
       }
     end
   end

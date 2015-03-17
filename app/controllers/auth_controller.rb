@@ -17,6 +17,7 @@ class AuthController < ApplicationController
       user.access_token = token.token
       user.refresh_token = token.refresh_token
       user.token_expires = token.expires_at
+      user.save
     end
     
     session[:user_id] = user.id
