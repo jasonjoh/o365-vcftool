@@ -1,3 +1,4 @@
+# Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See full license at the bottom of this file.
 require 'base64'
 
 module AuthHelper
@@ -18,6 +19,7 @@ module AuthHelper
     login_url = client.auth_code.authorize_url(:redirect_uri => authorize_url)
   end
   
+  # Generates the logout URL for the app.
   def get_logout_url(redirect_url)
     logout_url = "https://login.microsoftonline.com/common/oauth2/logout?"
     logout_url << { post_logout_redirect_uri: redirect_url }.to_param
@@ -38,6 +40,7 @@ module AuthHelper
     access_token = token
   end
   
+  # Refreshes an access token from a refresh token
   def get_token_from_refresh_token(user)
     logger.debug "BEGIN get_token_from_refresh_token"
     client = OAuth2::Client.new(CLIENT_ID,
@@ -81,3 +84,24 @@ module AuthHelper
     decoded_token = JSON.parse(Base64.urlsafe_decode64(encoded_token))
   end
 end
+
+# MIT License: 
+ 
+# Permission is hereby granted, free of charge, to any person obtaining 
+# a copy of this software and associated documentation files (the 
+# ""Software""), to deal in the Software without restriction, including 
+# without limitation the rights to use, copy, modify, merge, publish, 
+# distribute, sublicense, and/or sell copies of the Software, and to 
+# permit persons to whom the Software is furnished to do so, subject to 
+# the following conditions: 
+ 
+# The above copyright notice and this permission notice shall be 
+# included in all copies or substantial portions of the Software. 
+ 
+# THE SOFTWARE IS PROVIDED ""AS IS"", WITHOUT WARRANTY OF ANY KIND, 
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
