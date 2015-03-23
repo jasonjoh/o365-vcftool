@@ -1,3 +1,33 @@
+<div class="panel panel-primary'>
+  <div class="panel-heading">
+    <h3 class="panel-title">Your Contacts</h3>
+  </div>
+  <div class="panel-body">
+    <%= link_to "Import", import_url, class: "btn btn-default btn-primary" %>
+    <% if not @contacts.nil? and @contacts['value'].any? %>
+      <% no_more = @contacts['@odata.nextLink'].nil? %>
+      <% current_page = params[:page].nil? ? 1 : params[:page].to_i %>
+      <a href="<%= root_url + "?page=#{current_page - 1}" %>" class="btn btn-default" <%= disabled = "disabled" if current_page == 1 %>>&lt;</a>
+      <a href="<%= root_url + "?page=#{current_page + 1}" %>" class="btn btn-default" <%= disabled = "disabled" if no_more %>>&gt;</a>
+    <% end %>
+  </div>
+  <% if not @contacts.nil? and @contacts['value'].any? %>
+    <ul class="list-group">
+      <% @contacts['value'].each do |contact| %>
+        <li class="list-group-item">
+          <%= form_tag export_contact_url, class: "form-inline", role: "form" do %>
+            <div class="form-group">
+              <%= submit_tag "Export", class: "btn btn-xs btn-default" %>
+              <%= label_tag 'name', contact['DisplayName'] %>
+              <%= hidden_field_tag 'contact_id', contact['Id'] %>
+            </div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
+<!--
 <div class="pagination">
   <%= link_to "Import", import_url, class: "btn btn-default btn-primary" %>
   <a href="#" class="btn btn-default btn-primary">Export</a>
@@ -9,9 +39,16 @@
   <% end %>
 </div>
 <% if not @contacts.nil? and @contacts['value'].any? %>
-  <ol class="contacts">
+  <div class="container">
     <% @contacts['value'].each do |contact| %>
-      <li><%= contact['DisplayName'] %></li>
+      <%= form_tag "#", class: "form-inline", role: "form" do %>
+        <div class="form-group">
+          <%= submit_tag "Export", class: "btn btn-xs btn-default" %>
+          <%= label_tag 'name', contact['DisplayName'] %>
+          <%= hidden_field_tag 'contact_id', contact['Id'] %>
+        </div>
+      <% end %>
     <% end %>
-  </ol>
+  </div>
 <% end %>
+-->

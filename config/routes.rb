@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   get 'import' => 'v_card_import#import'
   post 'upload' => 'v_card_import#upload'
   post 'create_contacts' => 'v_card_import#create_contacts'
+  post 'export_contact' => 'contact_export#export'
+  post 'download' => 'contact_export#download'
 end

@@ -1,0 +1,2 @@
+module ContactExportHelper
+end
