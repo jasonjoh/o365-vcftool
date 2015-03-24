@@ -12,7 +12,6 @@ class ContactExportController < ApplicationController
     end
     
     outlook_client = RubyOutlook::Client.new
-    outlook_client.enable_fiddler = true
     
     # Call the ruby_outlook gem to get the contact from its ID
     contact = outlook_client.get_contact_by_id current_user.access_token, contact_id

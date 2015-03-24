@@ -35,7 +35,6 @@ class VCardImportController < ApplicationController
       # Create each one individually.
       if o365_contacts.any?
         outlook_client = RubyOutlook::Client.new
-        outlook_client.enable_fiddler = true
         
         success = Array.new
         error = Array.new

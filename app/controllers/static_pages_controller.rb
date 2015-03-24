@@ -9,7 +9,6 @@ class StaticPagesController < ApplicationController
       # If the user is logged in, get their contacts
       user = current_user
       outlook_client = RubyOutlook::Client.new
-      outlook_client.enable_fiddler = true
       
       # Maximum 30 results per page.
       view_size = 30
