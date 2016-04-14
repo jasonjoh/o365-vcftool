@@ -9,7 +9,7 @@ module AuthHelper
   CLIENT_SECRET = 'YOUR_CLIENT_SECRET_HERE'
 	
 	# Scopes required by the app
-	SCOPES = [ 'openid', 'https://outlook.office.com/contacts.read']
+	SCOPES = [ 'openid', 'https://outlook.office.com/contacts.readwrite']
 	
   # Generates the login URL for the app.
   def get_login_url
