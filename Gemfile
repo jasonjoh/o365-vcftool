@@ -33,8 +33,15 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 group :development, :test do
-  # Call 'debugger' anywhere in the code to stop execution and get a debugger console
-  gem 'debugger'
+  # Check version. byebug works with version 2.*, but not with 1.*
+  # debugger works with 1.*, but not with 2.*
+  if RUBY_VERSION.start_with?('2')
+    # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+    gem 'byebug', platform: :mri
+  else
+    # Call 'debugger' anywhere in the code to stop execution and get a debugger console
+    gem 'debugger'
+  end
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
