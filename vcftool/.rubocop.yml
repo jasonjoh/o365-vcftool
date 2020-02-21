@@ -1,3 +1,9 @@
+AllCops:
+  Exclude:
+    - db/schema.rb
+    - db/migrate/**/*
+    - node_modules/**/*
+
 Style/HashEachMethods:
   Enabled: true
 
