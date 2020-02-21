@@ -2,5 +2,6 @@
   "cSpell.words": [
     "cop",
     "rubo"
-  ]
+  ],
+  "editor.rulers":[80]
 }
