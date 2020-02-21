@@ -3,9 +3,11 @@
     "cop",
     "rubo"
   ],
-  "editor.rulers": [
-    80
-  ],
+  "[ruby]": {
+    "editor.rulers": [
+      80
+    ]
+  },
   "ruby.useLanguageServer": true,
   "ruby.useBundler": true,
   "ruby.format": "rubocop",
