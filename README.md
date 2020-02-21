@@ -5,11 +5,20 @@ This Ruby on Rails sample shows how to use the [Contacts API](https://msdn.micro
 ## Required software ##
 
 - [Ruby on Rails](http://rubyonrails.org/)
+- [Yarn](https://classic.yarnpkg.com/en/)
+
+
 - [ruby_outlook](http://github.com/jasonjoh/ruby_outlook)
 - [bootstrap-sass](https://rubygems.org/gems/bootstrap-sass)
 - [oauth2](https://rubygems.org/gems/oauth2)
 - [carrierwave](https://rubygems.org/gems/carrierwave)
 - [vcard](https://rubygems.org/gems/vcard)
+
+## Setup
+
+Run `bundle install` to install dependencies.
+
+> **Note:** If you get an error on running `rails server` that says `webpacker configuration file not found`, run `rails webpacker:install`.
 
 ## Generate a client ID and secret ###
 
