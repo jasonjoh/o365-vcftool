@@ -28,19 +28,19 @@
                   <% if @user_avatar %>
                     <img src=<%= @user_avatar %> class="rounded-circle align-self-center mr-2" style="width: 32px;">
                   <% else %>
-                    <i class="far fa-user-circle fa-lg rounded-circle align-self-center mr-2" style="width: 32px;"></i>
+                    <span class="badge badge-light"><%= @user_initials %></span>
                   <% end %>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                   <h5 class="dropdown-item-text mb-0"><%= @user_name %></h5>
                   <p class="dropdown-item-text text-muted mb-0"><%= @user_email %></p>
                   <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">Sign Out</a>
+                  <%= link_to "Sign Out", {:controller => :auth, :action => :signout}, :class => "dropdown-item" %>
                 </div>
               </li>
             <% else %>
               <li class="nav-item">
-                <%= link_to "Click here to sign in", "/auth/microsoft_graph_auth", method: :post, class: "nav-link" %>
+                <%= link_to "Sign in", "/auth/microsoft_graph_auth", method: :post, class: "nav-link" %>
               </li>
             <% end %>
           </ul>

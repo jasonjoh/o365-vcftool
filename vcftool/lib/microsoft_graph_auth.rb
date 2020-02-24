@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'omniauth-oauth2'
+require 'base64'
 
 module OmniAuth
   module Strategies
@@ -33,11 +34,15 @@ module OmniAuth
       def raw_info
         # Get user profile information from the /me endpoint
         @raw_info ||= access_token.get('https://graph.microsoft.com/v1.0/me').parsed
+        photo = access_token.get('https://graph.microsoft.com/v1.0/me/photos/48x48/$value')
+        @raw_info['photo'] = 'data:image/png;base64,' +
+                             Base64.strict_encode64(photo.body)
+        @raw_info
       end
 
       def authorize_params
         super.tap do |params|
-          params[:scope] ||= DEFAULT_SCOPEs
+          params[:scope] ||= DEFAULT_SCOPE
         end
       end
 
