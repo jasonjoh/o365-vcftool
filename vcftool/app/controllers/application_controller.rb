@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'microsoft_graph_auth'
+require 'oauth2'
+
 # ApplicationController
 class ApplicationController < ActionController::Base
   before_action :set_user
@@ -50,6 +53,43 @@ class ApplicationController < ActionController::Base
   end
 
   def access_token
-    session[:graph_token_hash][:token]
+    token_hash = session[:graph_token_hash]
+
+    # Get the expiry time - 5 minutes
+    expiry = Time.at(token_hash[:expires_at] - 300)
+
+    if Time.now > expiry
+      # Token expired, refresh
+      new_hash = refresh_tokens token_hash
+      new_hash[:token]
+    else
+      token_hash[:token]
+    end
+  end
+
+  def app_id
+    Rails.application.credentials.azure[:app_id]
+  end
+
+  def app_secret
+    Rails.application.credentials.azure[:app_secret]
+  end
+
+  def refresh_tokens(token_hash)
+    oauth_strategy = OmniAuth::Strategies::MicrosoftGraphAuth.new(
+      nil, app_id, app_secret
+    )
+
+    token = OAuth2::AccessToken.new(oauth_strategy.client,
+                                    token_hash[:token],
+                                    refresh_token: token_hash[:refresh_token])
+
+    # Refresh the tokens
+    new_tokens = token.refresh!.to_hash.slice(:access_token, :refresh_token,
+                                              :expires_at)
+    # Rename token key
+    new_tokens[:token] = new_tokens.delete :access_token
+    # Store the new hash
+    session[:graph_token_hash] = new_tokens
   end
 end
