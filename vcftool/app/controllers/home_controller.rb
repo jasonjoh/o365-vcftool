@@ -2,5 +2,9 @@
 
 # HomeController
 class HomeController < ApplicationController
-  def index; end
+  def index
+    return if access_token.nil?
+
+    redirect_to contacts_path
+  end
 end

@@ -10,7 +10,7 @@ module OmniAuth
     class MicrosoftGraphAuth < OmniAuth::Strategies::OAuth2
       option :name, :microsoft_graph_auth
 
-      DEFAULT_SCOPE = 'https://graph.microsoft.com/.default'
+      DEFAULT_SCOPE = 'https://graph.microsoft.com/.default offline_access'
 
       # Configure the Microsoft identity platform endpoints
       option  :client_options,

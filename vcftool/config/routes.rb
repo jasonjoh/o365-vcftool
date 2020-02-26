@@ -8,4 +8,8 @@ Rails.application.routes.draw do
   # Add route for OmniAuth callback
   match '/auth/:provider/callback', to: 'auth#callback', via: %i[get post]
   get 'auth/signout'
+  get 'contacts', to: 'contacts#index'
+  get 'contacts/next'
+  get 'contacts/prev'
+  get 'contacts/reset'
 end
