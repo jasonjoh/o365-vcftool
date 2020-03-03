@@ -65,3 +65,5 @@ gem 'omniauth-rails_csrf_protection', '~> 0.1.2'
 gem 'activerecord-session_store', '~> 1.1'
 
 gem 'httparty', '~> 0.18.0'
+
+gem 'vcard', '~> 0.2.16'

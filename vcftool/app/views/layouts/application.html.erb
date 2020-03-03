@@ -48,15 +48,29 @@
       </div>
     </nav>
     <main role="main" class="container">
-      <% if @errors %>
-        <% @errors.each do |error| %>
-          <div class="alert alert-danger" role="alert">
-            <p class="mb-3"><%= error[:message] %></p>
-            <%if error[:debug] %>
-              <pre class="alert-pre border bg-light p-2"><code><%= error[:debug] %></code></pre>
+      <% unless flash.alert.nil? %>
+        <div class="alert alert-danger" role="alert">
+          <% if flash.alert.is_a?(Hash)%>
+            <p class="mb-3"><%= flash.alert[:message] %></p>
+            <% if flash.alert[:debug] %>
+              <pre class="alert-pre border bg-light p-2"><code><%= flash.alert[:debug] %></code></pre>
             <% end %>
-          </div>
-        <% end %>
+          <% else %>
+            <%= flash.alert %>
+          <% end %>
+        </div>
+      <% end %>
+      <% unless flash.notice.nil? %>
+        <div class="alert alert-success" role="alert">
+          <% if flash.notice.is_a?(Hash)%>
+            <p class="mb-3"><%= flash.notice[:message] %></p>
+            <% if flash.notice[:debug] %>
+              <pre class="alert-pre border bg-light p-2"><code><%= flash.notice[:debug] %></code></pre>
+            <% end %>
+          <% else %>
+            <%= flash.notice %>
+          <% end %>
+        </div>
       <% end %>
       <%= yield %>
     </main>

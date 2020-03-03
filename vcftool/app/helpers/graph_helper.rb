@@ -6,18 +6,6 @@ require 'httparty'
 module GraphHelper
   GRAPH_HOST = 'https://graph.microsoft.com'
 
-  def make_api_call(endpoint, token, params = nil)
-    headers = {
-      Authorization: "Bearer #{token}"
-    }
-
-    query = params || {}
-
-    HTTParty.get "#{GRAPH_HOST}#{endpoint}",
-                 headers: headers,
-                 query: query
-  end
-
   def get_contacts(token, request_url)
     headers = { Authorization: "Bearer #{token}" }
 
@@ -31,6 +19,27 @@ module GraphHelper
     request = request_url || "#{GRAPH_HOST}/v1.0/me/contacts"
 
     response = HTTParty.get request, headers: headers, query: params
+    response.parsed_response
+  end
+
+  def get_contact(token, contact_id)
+    headers = { Authorization: "Bearer #{token}" }
+
+    request = "#{GRAPH_HOST}/v1.0/me/contacts/#{contact_id}"
+
+    response = HTTParty.get request, headers: headers
+    response.parsed_response
+  end
+
+  def update_contact(token, contact_id, contact)
+    headers = {
+      Authorization: "Bearer #{token}",
+      'Content-Type': 'application/json'
+    }
+
+    request = "#{GRAPH_HOST}/v1.0/me/contacts/#{contact_id}"
+
+    response = HTTParty.patch request, headers: headers, body: contact.to_json
     response.parsed_response
   end
 end

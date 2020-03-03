@@ -12,4 +12,7 @@ Rails.application.routes.draw do
   get 'contacts/next'
   get 'contacts/prev'
   get 'contacts/reset'
+  get 'contacts/edit/:id', to: 'contacts#edit', as: 'contacts_edit'
+  post 'contacts/update/:id', to: 'contacts#update', as: 'contacts_update'
+  get 'contacts/download'
 end

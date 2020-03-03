@@ -2,7 +2,8 @@
   <div class="card h-100">
     <div class="card-body">
       <h5 class="card-title"><%= contact['displayName'] %></h5>
-      <a href="#" class="btn btn-primary">Edit as VCF</a>
+      <%= link_to "Edit", contacts_edit_path(id: contact['id']), class: "btn btn-primary" %>
+      <%= link_to "Download", contacts_download_path(id: contact['id']), class: "btn btn-primary" %>
     </div>
   </div>
 </div>
