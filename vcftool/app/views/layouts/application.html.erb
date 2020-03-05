@@ -20,8 +20,15 @@
           aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <% if @user_name %>
+            <li class="nav-item">
+              <%= link_to "New contact", contacts_new_path, class: "nav-link" %>
+            </li>
+            <% end %>
+          </ul>
+          <ul class="navbar-nav justify-content-end">
             <% if @user_name %>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -49,7 +56,7 @@
     </nav>
     <main role="main" class="container">
       <% unless flash.alert.nil? %>
-        <div class="alert alert-danger" role="alert">
+        <div class="alert alert-danger alert-dismissable fade show" role="alert">
           <% if flash.alert.is_a?(Hash)%>
             <p class="mb-3"><%= flash.alert[:message] %></p>
             <% if flash.alert[:debug] %>
@@ -58,10 +65,13 @@
           <% else %>
             <%= flash.alert %>
           <% end %>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
       <% end %>
       <% unless flash.notice.nil? %>
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success alert-dismissable fade show" role="alert">
           <% if flash.notice.is_a?(Hash)%>
             <p class="mb-3"><%= flash.notice[:message] %></p>
             <% if flash.notice[:debug] %>
@@ -70,6 +80,9 @@
           <% else %>
             <%= flash.notice %>
           <% end %>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
       <% end %>
       <%= yield %>
@@ -84,5 +97,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"></script>
+    <%= yield :scripts %>
   </body>
 </html>

@@ -29,7 +29,6 @@ class ApplicationController < ActionController::Base
   end
 
   def generate_initials(auth_hash)
-    logger.debug 'generate_initials called'
     # If no avatar, get user's initials
     given_name = auth_hash.dig(:extra, :raw_info, :givenName)
     surname = auth_hash.dig(:extra, :raw_info, :surname)

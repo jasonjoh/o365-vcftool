@@ -123,18 +123,16 @@ module VcardHelper
 
     # Other personal information
     contact['nickName'] = card.nickname
-    # TODO: Make sure this is formatted properly
     contact['birthday'] = card.birthday
     contact['spouseName'] = card.value('X-MS-SPOUSE')
     contact['personalNotes'] = card.note
 
     # Work information
-    # TODO: Test this with no department
-    contact['companyName'] = card.org.fetch(0, nil)
-    contact['department'] = card.org.fetch(1, nil)
+    contact['companyName'] = card.org&.fetch(0, nil)
+    contact['department'] = card.org&.fetch(1, nil)
     contact['jobTitle'] = card.title
     contact['profession'] = card.role
-    contact['businessHomePage'] = card.url.uri
+    contact['businessHomePage'] = card.url&.uri
     contact['assistantName'] = card.value('X-MS-ASSISTANT')
     contact['manager'] = card.value('X-MS-MANAGER')
 
@@ -157,7 +155,7 @@ module VcardHelper
     process_vcard_addresses card, contact
 
     # Categories
-    contact['categories'] = card.categories
+    contact['categories'] = card.categories || []
 
     # IM Addresses
     im_addresses = card.values('X-MS-IMADDRESS')
@@ -171,6 +169,10 @@ module VcardHelper
 
   def process_vcard_telephones(card, contact)
     return if card.telephones.nil?
+
+    # vCard phone numbers are all in one collection,
+    # regardless of type. Need to iterate over the
+    # collection and pull out the ones that map to Graph
 
     # Create arrays for different types
     bizphones = []
@@ -202,8 +204,6 @@ module VcardHelper
       # - 2 business phones
       # - 2 home phones
       # - 1 mobile phone
-
-      # TODO: Test with less than 2 biz phones
       contact['businessPhones'] = bizphones.take(2) unless bizphones.empty?
       contact['homePhones'] = homephones.take(2) unless homephones.empty?
       contact['mobilePhone'] = mobilephones.first unless mobilephones.empty?
@@ -213,8 +213,14 @@ module VcardHelper
   def process_vcard_addresses(card, contact)
     return if card.addresses.nil?
 
+    # vCard addresses are all in one collection,
+    # regardless of type. Need to iterate over the
+    # collection and pull out the ones that map to Graph
     work_addr = home_addr = other_addr = nil
 
+    # In case of multiple addresses of the same type,
+    # default to using the first one found, unless one is
+    # marked as the preferred address
     card.addresses.each do |address|
       if address.location.include?('work')
         work_addr = address if work_addr.nil? || address.preferred
@@ -285,19 +291,18 @@ module VcardHelper
     "#{company || ''};#{department || ''}"
   end
 
-  def vcard_to_graph(vcard, logger)
+  def vcard_to_graph(vcard)
+    # A VCF file can have multiple contacts
     cards = Vcard::Vcard.decode(vcard)
-    logger.debug "Parsed cards: #{cards.inspect}"
 
     return if cards.nil? || cards.length <= 0
 
     contacts = []
 
+    # Convert each entry in the VCF to a Graph contact
     cards.each do |card|
       contacts.push contact_from_card(card)
     end
-
-    return contacts.first if contacts.length == 1
 
     contacts
   end
