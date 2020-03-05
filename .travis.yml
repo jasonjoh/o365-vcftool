@@ -3,6 +3,12 @@ rvm:
 - 2.6.5
 before_install:
 - cd vcftool
+- chmod +x bin/rails
+- chmod +x bin/rake
+- chmod +x bin/setup
+- chmod +x bin/webpack
+- chmod +x bin/webpack-dev-server
+- chmod +x bin/yarn
 install:
 - bundle update
 before_script:

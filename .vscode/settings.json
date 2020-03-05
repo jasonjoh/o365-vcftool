@@ -15,6 +15,7 @@
     "rubocop": true
   },
   "cSpell.ignoreWords": [
+    "chmod",
     "omniauth",
     "ujyl",
     "vcard",
