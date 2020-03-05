@@ -1,8 +1,9 @@
 language: ruby
 cache: bundler
 rvm:
-- 2.6
+- 2.6.5
 before_script:
+- cd vcftool
 - bundle exec rake db:create db:migrate db:seed
 script:
 - bundle exec rubocop
