@@ -4,6 +4,8 @@ rvm:
 - 2.6.5
 before_install:
 - cd vcftool
+install:
+- bundle update
 before_script:
 - bundle exec rake db:create db:migrate db:seed
 script:
