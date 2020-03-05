@@ -1,8 +1,8 @@
 language: ruby
 cache: bundler
 rvm:
- - 2.6
+- 2.6
 before_script:
- - bundle exec rake db:create db:migrate db:seed
+- bundle exec rake db:create db:migrate db:seed
 script:
- - bundle exec rubocop
+- bundle exec rubocop
