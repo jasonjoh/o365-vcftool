@@ -1,5 +1,7 @@
 # Microsoft Graph Office 365 VCF Import/Export Sample
 
+[![Build Status](https://travis-ci.org/jasonjoh/o365-vcftool.svg?branch=master)](https://travis-ci.org/jasonjoh/o365-vcftool)
+
 This Ruby on Rails sample shows how to use the [Contacts API](https://docs.microsoft.com/graph/outlook-contacts-concept-overview) to work with personal contacts.
 
 ## Required software
