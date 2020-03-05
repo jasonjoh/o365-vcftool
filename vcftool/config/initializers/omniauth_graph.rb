@@ -6,6 +6,8 @@
 require 'microsoft_graph_auth'
 
 Rails.application.config.middleware.use OmniAuth::Builder do
+  return if Rails.application.credentials.azure.nil?
+
   provider :microsoft_graph_auth,
            Rails.application.credentials.azure[:app_id],
            Rails.application.credentials.azure[:app_secret],
