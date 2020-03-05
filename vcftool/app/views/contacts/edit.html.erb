@@ -1,0 +1,14 @@
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+
+<%= form_with(url: contacts_update_path(id: @contact['id'])) do %>
+  <div class="row">
+    <div class="col-md-8">
+      <h1 class="mb-3"><%= @contact['displayName'] %></h1>
+    </div>
+    <div class="col-md-4 d-md-flex flex-row-reverse align-items-center">
+      <%= submit_tag "Update", class: "btn btn-primary mb-3" %>
+    </div>
+  </div>
+  <%= text_area_tag "vcard", @vcard, class: "form-control mb-3", rows: @vcard.to_s.lines.count+1 %>
+<% end %>

@@ -1,0 +1,27 @@
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+
+<% if @contacts.nil? %>
+<div class="jumbotron">
+  <h1>Outlook Contacts VCF Tool</h1>
+  <p class="lead">This sample app shows how to use the Microsoft Graph API to work with personal contacts.</p>
+  <%= link_to "Click here to sign in", "/auth/microsoft_graph_auth", method: :post, class: "btn btn-primary btn-large" %>
+</div>
+<% else %>
+  <h2>Contacts</h2>
+  <nav>
+    <ul class="pagination">
+      <li class="page-item">
+        <%= link_to "Previous", root_path(nav: "back"), class: "page-link" %>
+      </li>
+      <li class="page-item">
+        <%= link_to "Next", root_path(nav: "next"), class: "page-link" %>
+      </li>
+    </ul>
+  </nav>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <% @contacts['value'].each do |contact| %>
+      <%= render partial: 'contact_card', locals: { contact: contact } %>
+    <% end %>
+  </div>
+<% end %>

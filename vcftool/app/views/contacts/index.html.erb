@@ -1,0 +1,22 @@
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+
+<h1>Contacts</h1>
+<nav>
+  <ul class="pagination">
+    <li class="<%= @back_disabled ? "page-item disabled" : "page-item" %>">
+      <%= link_to "Beginning", contacts_reset_path, class: "page-link" %>
+    </li>
+    <li class="<%= @back_disabled ? "page-item disabled" : "page-item" %>">
+      <%= link_to "Previous", contacts_prev_path, class: "page-link" %>
+    </li>
+    <li class="<%= @contacts['@odata.nextLink'].nil? ? "page-item disabled" : "page-item" %>">
+      <%= link_to "Next", contacts_next_path, class: "page-link" %>
+    </li>
+  </ul>
+</nav>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+  <% @contacts['value'].each do |contact| %>
+    <%= render partial: 'contact_card', locals: { contact: contact } %>
+  <% end %>
+</div>

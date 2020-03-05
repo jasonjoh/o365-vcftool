@@ -1,0 +1,44 @@
+<!-- Copyright (c) Microsoft Corporation.
+     Licensed under the MIT License. -->
+
+<h1 class="mb-3">New contact</h1>
+<div class="custom-file text-truncate">
+  <%= file_field_tag "vcf", accept: "text/vcard,text/x-vcard", class: "custom-file-input" %>
+  <%= label_tag "vcf", "Choose file or enter text below", class: "custom-file-label" %>
+</div>
+<%= form_with url: contacts_create_path do %>
+  <%= text_area_tag "vcard", @vcard, class: "form-control mb-3", rows: 20, required:true %>
+  <%= submit_tag "Create", class: "btn btn-primary" %>
+  <%= link_to "Cancel", root_path, class: "btn btn-secondary" %>
+<% end %>
+<%= content_for :scripts do %>
+  <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+  <script>
+    // Initialize Bootstrap custom file input
+    $(document).ready(function () {
+      bsCustomFileInput.init();
+
+      $('#vcf').change(loadFile);
+    });
+
+    function loadFile(evt) {
+      var file = evt.target.files[0];
+
+      if (file) {
+        if (!file.type.match('.*vcard')) {
+          return;
+        }
+
+        var reader = new FileReader();
+
+        reader.onload = (function(fileContents) {
+          return function(e) {
+            $('#vcard').val(e.target.result);
+          };
+        })(file);
+
+        reader.readAsText(file);
+      }
+    }
+  </script>
+<% end %>

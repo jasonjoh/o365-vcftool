@@ -1,47 +1,73 @@
-# Office 365 VCF Import/Export Sample #
+# Microsoft Graph Office 365 VCF Import/Export Sample
 
-This Ruby on Rails sample shows how to use the [Contacts API](https://msdn.microsoft.com/office/office365/APi/contacts-rest-operations) via the [ruby_outlook](http://github.com/jasonjoh/ruby_outlook) gem.
+This Ruby on Rails sample shows how to use the [Contacts API](https://docs.microsoft.com/graph/outlook-contacts-concept-overview).
 
-## Required software ##
+## Required software
 
 - [Ruby on Rails](http://rubyonrails.org/)
-- [ruby_outlook](http://github.com/jasonjoh/ruby_outlook)
-- [bootstrap-sass](https://rubygems.org/gems/bootstrap-sass)
-- [oauth2](https://rubygems.org/gems/oauth2)
-- [carrierwave](https://rubygems.org/gems/carrierwave)
+- [Yarn](https://classic.yarnpkg.com/en/)
+- [omniauth-oauth2](https://github.com/omniauth/omniauth-oauth2)
+- [httparty](https://github.com/jnunemaker/httparty)
 - [vcard](https://rubygems.org/gems/vcard)
 
-## Generate a client ID and secret ###
+## Register an application
 
-Before we proceed, we need to register our app to obtain a client ID and secret. Head over to https://apps.dev.microsoft.com to quickly get a client ID and secret. Using the sign in buttons, sign in with either your Microsoft account (Outlook.com), or your work or school account (Office 365).
+1. Open a browser and navigate to the [Azure Active Directory admin center](https://aad.portal.azure.com). Login using a **personal account** (aka: Microsoft Account) or **Work or School Account**.
 
-Once you're signed in, click the **Add an app** button. Enter `VCFTool` for the name and click **Create application**. After the app is created, locate the **Application Secrets** section, and click the **Generate New Password** button. Copy the password now and save it to a safe place. Once you've copied the password, click **Ok**.
+1. Select **Azure Active Directory** in the left-hand navigation, then select **App registrations** under **Manage**.
 
-![The new password dialog.](./readme-images/app-new-password.PNG)
+1. Select **New registration**. On the **Register an application** page, set the values as follows.
 
-Locate the **Platforms** section, and click **Add Platform**. Choose **Web**, then enter `http://localhost:8000/authorize` under **Redirect URIs**. Click **Save** to complete the registration. Copy the **Application Id** and save it along with the password you copied earlier. We'll need those values soon.
+   - Set **Name** to `Outlook Contacts VCF Tool`.
+   - Set **Supported account types** to **Accounts in any organizational directory and personal Microsoft accounts**.
+   - Under **Redirect URI**, set the first drop-down to `Web` and set the value to `http://localhost:3000/auth/microsoft_graph_auth/callback`.
 
-Here's what the details of your app registration should look like when you are done.
+1. Select **Register**. On the **Ruby Graph Tutorial** page, copy the value of the **Application (client) ID** and save it, you will need it in the next step.
 
-![The completed registration properties.](./readme-images/app-registration.PNG)
+1. Select **API permissions** under **Manage**. Select **Add a permission**. Select **Microsoft Graph**, then **Delegated permissions**. Add the **Contacts.ReadWrite** permission, then select **Add permissions**.
 
-## Running the sample ##
+1. Select **Certificates & secrets** under **Manage**. Select the **New client secret** button. Enter a value in **Description** and select one of the options for **Expires** and select **Add**.
 
-It's assumed that you have Ruby on Rails installed before starting.
+1. Copy the client secret value before you leave this page. You will need it in the next step.
 
-1. Download or fork the sample project.
-1. Open a command prompt/shell to the directory where you downloaded the project and run `bundle` to install the required gems.
+   > **Important:** This client secret is never shown again, so make sure you copy it now.
+
+## Configure the sample
+
+The sample reads the app ID and secret from the Rails credentials API. You need to add these values to the **credentials.yml.enc** file.
+
+1. Open your command-line interface (CLI) in the **./vcftool** directory.
+1. Run the following command to edit credentials:
+
+    ```shell
+    rails credentials:edit
+    ```
+
+    > **Note:** If you receive an error `No $EDITOR to open file in`, you need to configure a text editor in the `EDITOR` environment variable. For more information, run `rails credentials:help` or visit [Securing Rails Applications](https://guides.rubyonrails.org/security.html#custom-credentials).
+
+1. Add the following to the credentials file and save it.
+
+    ```yml
+    # Azure
+    azure:
+      app_id: c9fb1bd9-ecc1-4c8a-a945-8f587dc95826
+      app_secret: Y7UjylVrdEBiPuIiRz@Ai@.tO:OX205@
+    ```
+
+## Running the sample
+
+## Setup
+
+1. Open your CLI and run `bundle install` to install dependencies.
 1. Run `bundle exec rake db:setup` to setup the database.
-1. Edit the `.\app\helpers\auth_helper.rb` file. Copy the client ID for your app obtained during app registration and paste it as the value of the `CLIENT_ID` variable. Copy the key you created during app registration and paste it as the value of the `CLIENT_SECRET` variable. Save the file.
-1. Run the server by running `rails server` from the command line.
-1. User your browser and go to http://localhost:3000.
-1. Click the 'Sign in with your Office 365 or Outlook.com Account' button to use the app.
+1. Run `rails server` to run the sample.
+1. Open your browser and go to [http://localhost:3000](http://localhost:3000).
 
-## Copyright ##
+## Copyright
 
 Copyright (c) Microsoft. All rights reserved.
 
-----------
-Connect with me on Twitter [@JasonJohMSFT](https://twitter.com/JasonJohMSFT)
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-Follow the [Exchange Dev Blog](http://blogs.msdn.com/b/exchangedev/)
+---------
+Connect with me on Twitter [@JasonJohMSFT](https://twitter.com/JasonJohMSFT)
