@@ -13,5 +13,11 @@
   "ruby.format": "rubocop",
   "ruby.lint": {
     "rubocop": true
-  }
+  },
+  "cSpell.ignoreWords": [
+    "omniauth",
+    "ujyl",
+    "vcard",
+    "vcftool"
+  ]
 }
