@@ -4,6 +4,7 @@ rvm:
 - 2.6.5
 before_script:
 - cd vcftool
+- bundle update
 - bundle exec rake db:create db:migrate db:seed
 script:
 - bundle exec rubocop
