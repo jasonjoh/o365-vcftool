@@ -1,9 +1,8 @@
 language: ruby
 rvm:
 - 2.6.5
-before_cache:
+before_install:
 - cd vcftool
-cache: bundler
 install:
 - bundle update
 before_script:
