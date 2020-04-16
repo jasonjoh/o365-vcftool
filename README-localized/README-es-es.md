@@ -1,47 +1,75 @@
-# Ejemplo de importación o exportación VCF de Office 365 #
+# Ejemplo de importación o exportación VCF de Microsoft Graph Office 365
 
-En este ejemplo de Ruby on Rails, se muestra cómo usar la [API de contactos](https://msdn.microsoft.com/office/office365/APi/contacts-rest-operations) con la gema [ruby\_outlook](http://github.com/jasonjoh/ruby_outlook).
+[![Estado de la compilación](https://travis-ci.org/jasonjoh/o365-vcftool.svg?branch=master)](https://travis-ci.org/jasonjoh/o365-vcftool)
 
-## Software necesario ##
+En esta muestra de Ruby on Rails se indica cómo usar la [API de contactos](https://docs.microsoft.com/graph/outlook-contacts-concept-overview) para trabajar con contactos personales.
+
+## Software necesario
 
 - [Ruby on Rails](http://rubyonrails.org/)
-- [ruby\_outlook](http://github.com/jasonjoh/ruby_outlook)
-- [bootstrap-sass](https://rubygems.org/gems/bootstrap-sass)
-- [OAauth2](https://rubygems.org/gems/oauth2)
-- [Carrierwave](https://rubygems.org/gems/carrierwave)
+- [Yarn](https://classic.yarnpkg.com/en/)
+- [omniauth-OAuth2](https://github.com/omniauth/omniauth-oauth2)
+- [httparty](https://github.com/jnunemaker/httparty)
 - [vCard](https://rubygems.org/gems/vcard)
 
-## Genere un Id. de cliente y un secreto ###
+## Registrar una aplicación
 
-Antes de continuar, debemos registrar nuestra aplicación para obtener un Id. de cliente y un secreto. Diríjase a https://apps.dev.microsoft.com para obtener un Id. de cliente y un secreto rápidamente. Inicie sesión con su cuenta Microsoft (Outlook.com) o con su cuenta profesional o educativa (Office 365) usando el botón para Iniciar sesión correspondiente.
+1. Abra el explorador y vaya al [Centro de administración de Azure Active Directory](https://aad.portal.azure.com). Inicie sesión con una **cuenta personal** (por ejemplo: una cuenta de Microsoft) o una **cuenta profesional o educativa**.
 
-Una vez que haya iniciado sesión, haga clic en el botón **Agregar una aplicación**. Escriba `VCFTool` como nombre y haga clic en **Crear aplicación**. Luego de crear la aplicación, busque la sección **Secretos de la aplicación** y haga clic en el botón **Generar nueva contraseña**. Copie la contraseña ahora y guárdela en un lugar seguro. Después de copiar la contraseña, haga clic en **Aceptar**.
+1. Seleccione **Azure Active Directory** en el panel de navegación izquierdo y, después, **Registros de aplicaciones** en **Administrar**.
 
-![Cuadro de diálogo de la nueva contraseña.](./readme-images/app-new-password.PNG)
+1. Seleccione **Nuevo registro**. En la página **Registrar una aplicación**, establezca los valores siguientes.
 
-En la sección **Plataformas**, haga clic en **Agregar plataforma**. Elija **Web**, luego escriba `http://localhost:8000/authorize` en **URI de redirección**. Haga clic en **Guardar** para completar el registro. Copie el **Id. de la aplicación** y guárdelo junto con la contraseña que copió previamente. En breve necesitaremos estos valores.
+   - Establezca el **nombre** de la `herramienta de contactos VCF de Outlook`.
+   - Establezca los **Tipos de cuenta admitidos** en las **Cuentas en cualquier directorio de organización y las cuentas personales de Microsoft**.
+   - En el **URI de redirección**, establezca la primera lista desplegable en `Web` y el valor de `http://localhost:3000/auth/microsoft_graph_auth/callback`.
 
-Cuando termine, este es el aspecto que deberían tener los detalles del registro de su aplicación.
+1. Seleccione **Registrarse**. En la página **Tutorial de Ruby Graph**, copie el valor del **ID de aplicación (cliente)** y guárdelo, lo necesitará en el paso siguiente.
 
-![Las propiedades del registro completado.](./readme-images/app-registration.PNG)
+1. Seleccione **Permisos de API** en **Administrar**. Seleccione **Añadir un permiso**. Seleccione **Microsoft Graph** y, después, **Permisos delegados**. Añada el permiso **Contacts.ReadWrite** y, a continuación, seleccione **Añadir permisos**.
 
-## Ejecución del ejemplo ##
+1. Seleccione **Certificados y secretos** en **Administrar**. Seleccione el botón **Nuevo secreto de cliente**. Escriba un valor en **Descripción**, seleccione una de las opciones de **Caduca** y marque **Añadir**.
 
-Se asume que tiene Ruby on Rails instalado antes de comenzar.
+1. Copie el valor del secreto de cliente antes de salir de esta página. Lo necesitará en el siguiente paso.
 
-1. Descargue o bifurque el proyecto de ejemplo.
-1. Abra un símbolo del sistema o un shell de comandos en el directorio en el que haya descargado el proyecto y ejecute `bundle` para instalar las gemas necesarias.
+   > **Importante:** el secreto de cliente no se vuelve a mostrar, así que asegúrese de copiarlo en este momento.
+
+## Configuración del ejemplo
+
+El ejemplo lee el ID de la aplicación y el secreto de la API de credenciales de Rails. Añada estos valores al archivo **credentials.yml.enc**.
+
+1. Abra la interfaz de línea de comandos (CLI) en el directorio **./vcftool**.
+1. Ejecute el comando siguiente para editar las credenciales:
+
+    ```shell
+	rails credentials:edit
+    ```
+
+    > **Nota:** si recibe el error `No $EDITOR to open file in`, tiene que configurar un editor de texto en la variable de entorno de `EDITOR`. Para obtener más información, ejecute `rails credentials:help` o visite [protección en las aplicaciones de Rails](https://guides.rubyonrails.org/security.html#custom-credentials).
+
+1. Añada lo siguiente al archivo de credenciales y guárdelo.
+
+    ```yml
+    # Azure
+    azure:
+	app_id: c9fb1bd9-ecc1-4c8a-a945-8f587dc95826 app_secret:
+	Y7UjylVrdEBiPuIiRz@Ai@.tO:OX205@
+    ```
+
+## Ejecutando el ejemplo
+
+## Configuración
+
+1. Abra la CLI y ejecute `bundle install` para instalar las dependencias.
 1. Ejecute `bundle exec rake db:setup` para configurar la base de datos.
-1. Edite el archivo `.\app\helpers\auth_helper.rb`. Copie el Id. de cliente de aplicación que obtuvo durante el registro de la aplicación y péguelo como el valor de la variable `CLIENT_ID`. Copie la clave que creó durante el registro de la aplicación y péguela como el valor de la variable `CLIENT_SECRET`. Guarde el archivo.
-1. Ejecute el servidor ejecutando `rails server` desde la línea de comandos.
-1. Abra el explorador y vaya a http://localhost:3000.
-1. Haga clic en el botón "Iniciar sesión con su cuenta de Office 365 o Outlook.com" para usar la aplicación.
+1. Ejecute el `servidor de Rails` para iniciar el ejemplo.
+1. Abra el explorador y vaya a [http://localhost:3000](http://localhost:3000).
 
-## Copyright ##
+## Derechos de autor
 
 Copyright (c) Microsoft. Todos los derechos reservados.
 
-----------
-Conectar conmigo en Twitter [@JasonJohMSFT](https://twitter.com/JasonJohMSFT)
+Este proyecto ha adoptado el [Código de conducta de código abierto de Microsoft](https://opensource.microsoft.com/codeofconduct/). Para obtener más información, consulte las [Preguntas frecuentes sobre el código de conducta](https://opensource.microsoft.com/codeofconduct/faq/) o póngase en contacto con [opencode@microsoft.com](mailto:opencode@microsoft.com) si tiene otras preguntas o comentarios.
 
-Seguir el [blog de desarrollo de Exchange](http://blogs.msdn.com/b/exchangedev/)
+---------
+Conecte conmigo en Twitter [@JasonJohMSFT](https://twitter.com/JasonJohMSFT)
